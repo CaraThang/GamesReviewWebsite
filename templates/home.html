@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="game-gallery">
+    {% for game in games %}
+    <div class="game-item">
+        <a href="{{ url_for('gameform', game_id=game['id']) }}">
+            <img src="{{ url_for('static', filename='gcovers/' + game['image_path']) }}" alt="{{ game['title'] }}">
+        </a>
+        <h3>{{ game['title'] }}</h3>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

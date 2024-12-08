@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="game-detail">
+    <div class="game-header">
+        <img src="{{ url_for('static', filename='gcovers/' + game['image_path']) }}" alt="{{ game['title'] }}">
+        <div class="game-info">
+            <h2>{{ game['title'] }}</h2>
+            <span class="tag">Reviews</span>
+        </div>
+    </div>
+    <div class="game-meta">
+        <span>Release Date: {{ game['year'] }}</span>
+        <span>Rating: {{ game['rating'] }}/5</span>
+    </div>
+    <p>{{ game['description'] }}</p>
+</div>
+{% endblock %}
+
+ 
