@@ -1,1 +1,4 @@
 .venv/
+static/.DS_Store
+static/icons/.DS_Store
+static/uploads/.DS_Store
