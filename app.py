@@ -19,7 +19,7 @@ def get_db():
     db.row_factory = sqlite3.Row
     return db
 
-@app.route('/')
+@app.route('/home')
 def index():
     if 'user_id' not in session:
         return redirect(url_for('login'))
@@ -34,6 +34,23 @@ def index():
     games = db.execute('SELECT id, title FROM games').fetchall()
     
     return render_template('index.html', entries=entries, games=games)
+
+@app.route('/')
+def home():
+    db = get_db()
+    games = db.execute('SELECT * FROM games').fetchall()
+    return render_template('home.html', games=games)
+
+@app.route('/game/<int:game_id>')
+def gameform(game_id):
+    db = get_db()
+    game = db.execute('SELECT * FROM games WHERE id = ?', (game_id,)).fetchone()
+    print(f"Received game_id: {game_id}")
+    if not game:
+        flash('Game not found!', 'error')
+        return redirect(url_for('index'))
+    return render_template('gameform.html', game=game)
+
     
 @app.route('/login', methods=['GET', 'POST'])
 def login():
