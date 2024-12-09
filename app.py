@@ -99,11 +99,12 @@ def add_entry():
         return redirect(url_for('login'))
 
     title = request.form['title']
-    game_id = request.form['game']  # Get the selected game ID
+    game_id = request.form['game']  # Get the selected game ID from the hidden field
     description = request.form['description']
-    rating = request.form['rating']  # Get the star rating
+    rating = request.form['rating']  # Get the star rating from the form
     image = request.files['image']
 
+    # Ensure game_id and rating are provided
     if not game_id:
         flash('Please select a game.', 'error')
         return redirect(url_for('gameform', game_id=game_id))  # Redirect to the gameform for the specific game
@@ -117,6 +118,7 @@ def add_entry():
         return redirect(url_for('gameform', game_id=game_id))  # Redirect to the gameform for the specific game
 
     if image and allowed_file(image.filename):
+        # Generate a unique filename for the image
         filename = secure_filename(f"{datetime.now().timestamp()}_{image.filename}")
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         image.save(filepath)
@@ -137,11 +139,32 @@ def add_entry():
         ))
         db.commit()
 
-        flash('Entry added successfully!', 'success')
+        # Fetch all entries for the game to calculate the average rating
+        entries = db.execute('''
+            SELECT rating FROM entries WHERE game_id = ?
+        ''', (game_id,)).fetchall()
+
+        # Calculate the average rating
+        if entries:
+            total_rating = sum(entry['rating'] for entry in entries)
+            average_rating = total_rating / len(entries)
+        else:
+            average_rating = 0  # In case there are no entries for this game yet
+
+        # Update the game's rating in the `games` table
+        db.execute('''
+            UPDATE games
+            SET rating = ?
+            WHERE id = ?
+        ''', (average_rating, game_id))
+        db.commit()
+
+        flash('Entry added successfully and game rating updated!', 'success')
     else:
         flash('Invalid file type', 'error')
 
-    return redirect(url_for('gameform', game_id=game_id))   # Redirect back to the specific game's form
+    return redirect(url_for('gameform', game_id=game_id))  # Redirect back to the specific game's form
+
 
 @app.route('/edit_entry/<int:entry_id>', methods=['POST'])
 def edit_entry(entry_id):
@@ -188,8 +211,22 @@ def edit_entry(entry_id):
             SET title = ?, description = ?, rating = ?
             WHERE id = ? AND user_id = ?
         ''', (title, description, rating, entry_id, session['user_id']))
-
     db.commit()
+
+    # Recalculate the average rating after editing the entry
+    ratings = db.execute('''
+        SELECT rating FROM entries WHERE game_id = ?
+    ''', (entry['game_id'],)).fetchall()
+    average_rating = sum([r['rating'] for r in ratings]) / len(ratings) if ratings else 0
+
+    # Update the average rating in the `games` table
+    db.execute('''
+        UPDATE games
+        SET rating = ?
+        WHERE id = ?
+    ''', (average_rating, entry['game_id']))
+    db.commit()
+
     flash('Entry updated successfully!', 'success')
     return redirect(url_for('gameform', game_id=entry['game_id']))
 
