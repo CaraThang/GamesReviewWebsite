@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}ICOG{% endblock %}</title>
+    <title>ICOG</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/test.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icons/favicon.png') }}">
     <script>
-        // Register service worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/service-worker.js')
@@ -22,29 +21,75 @@
     </script>
 </head>
 <body>
+
     <!-- Header Section -->
     <div class="header">
-        <h1>ICOG: Internet Collection of Games</h1>
-        {% if session.user_id %}
-        <div>
-            Welcome, {{ session.username }}
-            <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+        <!-- Logo -->
+        <a href="{{ url_for('home') }}">
+            <img src="/static/icons/favicon.png" alt="Logo">
+        </a>
+
+        <!-- Login/Logout Link in the middle -->
+        <div class="auth-actions">
+            {% if session.user_id %}
+                <span>Welcome, {{ session.username }}</span>
+                <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+            {% else %}
+                <span>Register OR</span>
+                <a href="{{ url_for('login') }}" class="logout-button">Login</a>
+            {% endif %}
         </div>
+    </div>
+
+    <!-- Subheader -->
+    <div class="subheader">
+        <!-- Back Button -->
+        <button id="back-button">← Back</button>
+
+        <!-- Search Bar (Hidden on login and register pages) -->
+        {% if request.endpoint not in ['login', 'register'] %}
+            <form method="get" action="{{ url_for('search') }}" class="search-form">
+                <input type="text" name="search" placeholder="Search For Games" aria-label="Search">
+                <button type="submit">
+                    <img src="/static/icons/icon-search-64x64.png" alt="Search">
+                </button>
+            </form>
         {% endif %}
+
+        <!-- Messages -->
+        <div id="flashed-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="message {% if category == 'error' %}error{% else %}success{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- Forward Button -->
+        <button id="forward-button">→ Forward</button>
     </div>
 
     <!-- Main Content Section -->
     <div class="main">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="message {% if category == 'error' %}error{% else %}success{% endif %}">
-            {{ message }}
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
         {% block content %}{% endblock %}
     </div>
+
+    <!-- Back & Forth Button Script -->
+    <script>
+        const backButton = document.getElementById('back-button');
+        const forwardButton = document.getElementById('forward-button');
+        const isHomePage = window.location.pathname === '/';
+
+        if (!isHomePage) {
+            backButton.style.display = 'block';
+        }
+
+        backButton.addEventListener('click', () => window.history.back());
+        forwardButton.addEventListener('click', () => window.history.forward());
+    </script>    
 </body>
 </html>
