@@ -9,7 +9,7 @@
     </div>
     <div class="game-meta">
         <span>Release: {{ game['year'] }}</span>
-        <span>Rating: {{ game['rating'] }}/5</span>
+        <span>Rating: {{ game['rating'] }}/5</span>  <!-- Display the average rating -->
     </div>
     <p>{{ game['description'] }}</p>
 </div>
@@ -17,20 +17,12 @@
 {% if session.get('user_id') %}
     <div class="entry-form">
         <form action="{{ url_for('add_entry') }}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="game" value="{{ game['id'] }}">
             <div>
                 <h2>Write A Review</h2>
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" required>
             </div>
-            <div>
-                <label for="game">Game:</label>
-                <select id="game" name="game" required>
-                    <option value="">Select a game</option>
-                    {% for review_game in games %}
-                        <option value="{{ review_game['id'] }}">{{ review_game['title'] }}</option>
-                    {% endfor %}
-                </select>
-            </div>  
             <div>
                 <label>Rating:</label>
                 <div class="stars">
