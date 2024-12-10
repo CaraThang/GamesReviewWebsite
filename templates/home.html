@@ -9,6 +9,7 @@
             <img src="{{ url_for('static', filename='gcovers/' + game['image_path']) }}" alt="{{ game['title'] }}">
         </a>
         <h4>{{ game['title'] }}</h4>
+        <span>{{ game['year'] }}</span>
     </div>
     {% endfor %}
 </div>
