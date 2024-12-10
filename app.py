@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'
+app.secret_key = 'carat-land-2024'
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -28,17 +28,30 @@ def home():
 @app.route('/game/<int:game_id>')
 def gameform(game_id):
     db = get_db()
+
+    # Fetch game details
     game = db.execute('SELECT * FROM games WHERE id = ?', (game_id,)).fetchone()
     if not game:
         flash('Game not found!', 'error')
         return redirect(url_for('home'))
 
+    # Fetch reviews for this game and join with the user table to get the username
     entries = db.execute('''
-        SELECT * FROM entries
-        WHERE game_id = ?
-        ORDER BY created_at DESC
+        SELECT 
+            entries.*, 
+            users.username 
+        FROM 
+            entries 
+        JOIN 
+            users 
+        ON 
+            entries.user_id = users.id 
+        WHERE 
+            entries.game_id = ?
+        ORDER BY entries.created_at DESC
     ''', (game_id,)).fetchall()
 
+    # Render the template
     return render_template('gameform.html', game=game, entries=entries)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -169,6 +182,7 @@ def add_entry():
 @app.route('/edit_entry/<int:entry_id>', methods=['POST'])
 def edit_entry(entry_id):
     if 'user_id' not in session:
+        flash('You need to log in to edit an entry.', 'error')
         return redirect(url_for('login'))
 
     db = get_db()
@@ -252,6 +266,19 @@ def delete_entry(entry_id):
     db.execute('DELETE FROM entries WHERE id = ?', (entry_id,))
     db.commit()
     flash('Entry deleted successfully!', 'success')
+
+    ratings = db.execute('''
+        SELECT rating FROM entries WHERE game_id = ?
+    ''', (entry['game_id'],)).fetchall()
+    average_rating = sum([r['rating'] for r in ratings]) / len(ratings) if ratings else 0
+
+    # Update the average rating in the `games` table
+    db.execute('''
+        UPDATE games
+        SET rating = ?
+        WHERE id = ?
+    ''', (average_rating, entry['game_id']))
+    db.commit()
 
     return redirect(url_for('gameform', game_id=entry['game_id']))
 
