@@ -6,93 +6,32 @@ body {
 }
 
 .main {
-    width: 800px;
+    width: 900px;
     margin: auto;
-    padding: 20px;
 }
 
 /* Header Styling */
 .header {
-    background-color: #222;
-    color: white;
-    padding: 10px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 18px;
+    background-color: #222;
+    padding: 10px 15px;
 }
 
 h2 {
     text-align: center;
-    margin:10px;
 }
 
-/* Form Styling */
-* {
-    box-sizing: border-box;
-}
-
-.form-container {
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    flex: 1; /* Allow the main section to grow and fill available space */
-    padding: 20px;
-}
-
-.form-box {
-    background-color: white;
-    padding: 40px; /* Increased padding for a roomier appearance */
-    width: 80%; /* Takes 80% of the viewport width */
-    max-width: 700px; /* Restricts the width on larger screens for readability */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Slightly enhanced shadow for better visibility */
-    border-radius: 8px; /* Added rounded corners for a modern look */
-}
-
-/* Entry Form Styling */
-.entry-form {
-    background-color: white;
-    padding: 40px; /* Increased padding for a roomier appearance */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Slightly enhanced shadow for better visibility */
-    border-radius: 8px; /* Added rounded corners for a modern look */
-} 
-
-.entry {
-    background-color: white;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.entry-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.entry-actions {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-}
-
-.entry img {
-    max-height: 300px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
+h4 {
+    margin:4px;
 }
 
 /* Icon Styling */
 .icon-button {
+    margin-top: 0px;
     background: none;
     border: none;
-    padding: 1px;
-    margin: 30px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .icon-button:hover {
@@ -101,7 +40,6 @@ h2 {
 }
     
 .icon {
-    width: 16px;
     height: 16px;
     opacity: 0.7;
 }
@@ -116,20 +54,6 @@ label {
     margin-top: 10px;
 }
 
-.logout-button {
-    background-color: #ff4444;
-    color: white;
-    text-decoration: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    font-size: 14px;
-    text-align: center;
-}
-
-.logout-button:hover {
-    background-color: #c03232;
-}
-
 input, textarea, button {
     width: 100%;
     padding: 10px;
@@ -137,68 +61,78 @@ input, textarea, button {
 
 button {
     margin-top: 15px;
-    padding: 10px 20px;
     font-size: 16px;
     border: none;
     background-color: #3798ff;
     color: #fff;
-    border-radius: 5px;
 }
 
 button:hover {
     background-color: #3c84d1;
 }
 
-/* Star Rating Styling */
-.stars {
-    display:inline-flex;
-    justify-content: left;
-    gap: 5px;
+    /* FOR Logout Button */
+.logout-button {
+    background-color: #ff4444;
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
 }
 
-.starsdisplay{
-    display: flex;
-    justify-content: left;
-    gap: 5px;
-    width: 10px;
-    height: 10px;
-    cursor: pointer;
+.logout-button:hover {
+    background-color: #c03232;
 }
 
-.stars img {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    transition: transform 0.2s;
+    /* FOR Back Button */
+#back-button {
+    color: black;
+    position: fixed; /* Fix the button to a specific position */
+    background-color: transparent;
+    bottom: 10px; /* Distance from the bottom of the viewport */
+    border: none; /* No border */
+    border-radius: 0px;
+    margin-top: 15px;
+    width: 100px;
+    z-index: 1000; /* Ensure it appears above most other elements */
 }
 
-.stars img:hover {
-    transform: scale(1.2);
+#back-button:hover {
+    transform: scale(1.1); /* Slight scaling effect on hover */
+    opacity: 70%;
 }
 
-/* Other Styling */
-.auth-actions {
-    align-items: center; /* Center horizontally */
-    gap: 10px; /* Space between login/logout buttons */
-    color: #fff;
+    /* FOR Forward Button */
+#forward-button {
+    color: black;
+    position: fixed; /* Fix the button to a specific position */
+    background-color: transparent;
+    bottom: 10px; /* Distance from the bottom of the viewport */
+    right: 10px; /* Distance from the right side of the viewport */
+    border: none; /* No border */
+    width: 100px;
+    z-index: 1000; /* Ensure it appears above most other elements */
 }
 
+#forward-button:hover {
+    transform: scale(1.1); /* Slight scaling effect on hover */
+    opacity: 70%;
+}
+
+/* Auth Styling */
 .auth-actions span {
     font-size: 14px;
     color: #fff;
-    align-items: center;
 }
 
 .auth-link {
     color: #3798ff;
     text-decoration: none;
-    padding: 8px 15px;
     border-radius: 3px;
-    font-size: 14px;
 }
 
 .auth-link:hover {
-    background-color: rgba(55, 152, 255, 0.1);
     color: #3c84d1;
 }
 
@@ -219,50 +153,143 @@ button:hover {
 .success {
     background-color: #d4edda;
     color: #155724;
-    border: 1px solid #c3e6cb;
-    border-radius: 5px;
 }
 
 .error {
     background-color: #f3d7da;
     color: #721c24;
-    border: 1px solid #f5c6cb;
     border-radius: 5px;
     text-align: center;
+}
+
+/* Search Bar Styling */
+.search-form {
+    display: flex;
+    justify-content:center;
+    margin: 20px
+}
+
+.search-form input {
+    width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-form button {
+    width: 36px; /* Small button size */
+    margin-top: 0px;
+    background: transparent; /* Transparent background */
+    display: flex;
+}
+
+.search-form button img {
+    height: 20px;
+}
+
+.search-form button:hover img {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+/* Form Styling */
+* {
+    box-sizing: border-box;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    padding: 50px;
+}
+
+.form-box {
+    background-color: white;
+    padding: 40px; /* Increased padding for a roomier appearance */
+    width: 90%; /* Takes 80% of the viewport width */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Slightly enhanced shadow for better visibility */
+    border-radius: 8px; /* Added rounded corners for a modern look */
+}
+
+    /* FOR Entry Form */
+.entry-form {
+    background-color: white;
+    padding: 40px; /* Increased padding for a roomier appearance */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Slightly enhanced shadow for better visibility */
+    border-radius: 8px; /* Added rounded corners for a modern look */
+} 
+
+.entry {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px; /* Added rounded corners for a modern look */
+}
+
+.entry-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.entry-actions {
+    display: flex;
+    gap: 3px;
+}
+
+.entry img {
+    max-height: 150px;
+    display: block;
+    margin: 0 auto;
 }
 
 .date {
     color: gray;
     font-size: 0.9em;
+    margin: 20px 0px;
 }
 
-/* Game Gallery Styling */
+/* Star Rating Styling */
+.stars {
+    display:inline-flex;
+    gap: 7px;
+    margin: 5px 0px;
+}
+
+.starsdisplay{
+    display: flex;
+    gap: 5px;
+    width: 10px;
+    height: 10px;
+}
+
+.stars img {
+    height: 20px;
+    transition: transform 0.2s;
+}
+
+.stars img:hover {
+    transform: scale(1.2);
+}
+
+/* Gameform.html Styling */
 .game-gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 20px;
-    margin-top: 20px;
-
-    /* Center the grid items */
-    justify-content: center;
-    align-content: center;
 }
 
 .game-item {
     display: grid; /* Use grid for the item itself */
     grid-template-rows: auto 1fr; /* Allocate rows for the image and text */
-    flex-direction: column; /* Stack content vertically */
     justify-content: center; /* Center content vertically */
     align-items: center; /* Center content horizontally */
     text-align: center;
 }
 
 .game-item img {
-    width: 200px; /* Adjusted size for better visibility */
     height: 200px; /* Ensure all images are uniform */
-    border-radius: 8px;
     transition: transform 0.2s;
-    text-align: center;
 }
 
 .game-item img:hover {
@@ -273,44 +300,11 @@ button:hover {
 .game-detail {
     display: flex;
     align-items: center;
-    gap: 12px;
     text-align: center;
     padding: 20px;
     border-radius: 12px;
     margin: 20px auto; /* Center the block */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Add subtle shadow */
-}
-
-.game-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-}
-
-.game-header img {
-    width: 200px; /* Uniform size */
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    transition: transform 0.2s ease-in-out;
-}
-
-.game-header img:hover {
-    transform: scale(1.05); /* Slight zoom effect on hover */
-}
-
-.game-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-}
-
-.game-info h2 {
-    font-size: 19px;
-    font-weight: bold;
-    margin: 0;
 }
 
 .game-meta {
@@ -322,96 +316,25 @@ button:hover {
 }
 
 .game-meta span {
-    display: inline-block;
-    font-style: bold;
+    font-weight: bold;
 }
 
-p {
-    font-size: 16px;
-    line-height: 1.4;
-}
-
-/* Search Styling */
-.search-form {
+.game-header {
     display: flex;
-    justify-content:center;
-    align-items: center;
-    margin: 20px
+    flex-direction: column;
+    gap: 8px;
 }
 
-.search-form input {
-    width: 320px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 30px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+.game-header img {
+    height: 200px;
+    transition: transform 0.2s ease-in-out;
 }
 
-.search-form input:focus {
-    border-color: #007BFF;
-    outline: none;
-    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+.game-header img:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
 }
 
-.search-form button {
-    width: 36px; /* Small button size */
-    padding: 0px;
-    margin-top: 0px;
-    background: transparent; /* Transparent background */
-    border: none;
-    border-radius: 50%; /* Circular button */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease;
-}
-
-.search-form button img {
-    width: 20px; /* Small icon size */
-    height: 20px;
-    transition: transform 0.3s ease;
-}
-
-.search-form button:hover img {
-    transform: scale(1.1); /* Slight zoom effect on hover */
-}
-
-/* Back Button Styling */
-#back-button {
-    color: black;
-    position: fixed; /* Fix the button to a specific position */
-    background-color: transparent;
-    bottom: 10px; /* Distance from the bottom of the viewport */
-    border: none; /* No border */
-    border-radius: 0px;
-    margin-top: 15px;
-    width: 100px;
-    padding: 10px 30px;
-    z-index: 1000; /* Ensure it appears above most other elements */
-}
-
-#back-button:hover {
-    transform: scale(1.1); /* Slight scaling effect on hover */
-    opacity: 70%;
-}
-
-/* Forward Button Styling */
-#forward-button {
-    color: black;
-    position: fixed; /* Fix the button to a specific position */
-    background-color: transparent;
-    bottom: 10px; /* Distance from the bottom of the viewport */
-    right: 10px; /* Distance from the right side of the viewport */
-    border: none; /* No border */
-    border-radius: 0px;
-    margin-top: 15px;
-    width: 100px;
-    z-index: 1000; /* Ensure it appears above most other elements */
-}
-
-#forward-button:hover {
-    transform: scale(1.1); /* Slight scaling effect on hover */
-    opacity: 70%;
+.game-info h2 {
+    font-size: 19px;
+    margin: 10px;
 }
