@@ -1,3 +1,5 @@
+/* This database setup was approved before submission - Tuesday 10th December 2024 */
+
 CREATE TABLE IF NOT EXISTS users(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL, 
@@ -22,3 +24,7 @@ CREATE TABLE IF NOT EXISTS games(
     description TEXT,
     rating INTEGER NOT NULL,
     image_path TEXT NOT NULL);
+
+/* INSERT INTO users(username, password) VALUES
+                 ('admin_test', '12345');
+This is the admin_test user - a dummy user used for website testing */ 

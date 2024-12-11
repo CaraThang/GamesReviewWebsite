@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icons/favicon.png') }}">
     <link rel="manifest" href="/manifest.json">
-    <script>
+
+    <script> /* Loads the service worker */
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/service-worker.js')
@@ -20,19 +21,16 @@
             });
         }
     </script>
+    
 </head>
 <body>
-
-    <!-- Header Section -->
     <div class="header">
-        <!-- Logo -->
         <a href="{{ url_for('home') }}">
-            <img src="/static/icons/favicon.png" alt="Logo">
+            <img src="/static/icons/favicon.png" alt="Logo"> <!-- Displays ICOG logo in the header -->
         </a>
 
-        <!-- Login/Logout Link in the middle -->
-        <div class="auth-actions">
-            {% if session.user_id %}
+        <div class="auth-actions"> 
+            {% if session.user_id %} <!-- Checking if a user is logged in or not  -->
                 <span>Welcome, {{ session.username }}</span>
                 <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
             {% else %}
@@ -42,45 +40,38 @@
         </div>
     </div>
 
-    <!-- Subheader -->
     <div class="subheader">
-        <!-- Back Button -->
-        <button id="back-button">← Back</button>
+        <button id="back-button">← Back</button> <!-- Back Button -->
 
-        <!-- Search Bar (Hidden on login and register pages) -->
-        {% if request.endpoint not in ['login', 'register'] %}
+        {% if request.endpoint not in ['login', 'register'] %} <!-- Hides search bar from login and register page - Used chatgpt for the if statement-->
             <form method="get" action="{{ url_for('search') }}" class="search-form">
-                <input type="text" name="search" placeholder="Search For Games" aria-label="Search">
+                <input type="text" name="search" placeholder="Search For Games"> <!-- Placeholder: text inside the box - https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/placeholder -->
                 <button type="submit">
-                    <img src="/static/icons/icon-search-64x64.png" alt="Search">
+                    <img src="/static/icons/icon-search-64x64.png" alt="Search"> <!-- Search Button -->
                 </button>
             </form>
         {% endif %}
 
-        <!-- Messages -->
-        <div id="flashed-messages">
+        <div>
             {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
+                {% if messages %} <!-- Locates stored messages -->
+                    {% for category, message in messages %} 
                         <div class="message {% if category == 'error' %}error{% else %}success{% endif %}">
-                            {{ message }}
+                            {{ message }} <!-- Displays the appropriate message depending on failure or success of the action -->
                         </div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
         </div>
 
-        <!-- Forward Button -->
-        <button id="forward-button">→ Forward</button>
+        <button id="forward-button">→ Forward</button> <!-- Forward Button -->
     </div>
 
-    <!-- Main Content Section -->
     <div class="main">
-        {% block content %}{% endblock %}
+        {% block content %}{% endblock %} <!-- A placeholder for "content" from child templates - https://www.w3schools.com/django/ref_tags_block.php \ -->
     </div>
 
-    <!-- Back & Forth Button Script -->
-    <script>
+    <script> /* Back & Forth Button Script - Used chatgpt */
         const backButton = document.getElementById('back-button');
         const forwardButton = document.getElementById('forward-button');
         const isHomePage = window.location.pathname === '/';
