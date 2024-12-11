@@ -1,5 +1,5 @@
 {
-    "name": "ICOG",
+    "name": "Internet Collection Of Games",
     "short_name": "ICOG",
     "start_url": "/",
     "display": "standalone",
@@ -9,49 +9,48 @@
       {
         "src": "/static/icons/favicon.png",
         "sizes": "64x64",
+        "type": "image/png",
+        "purpose" : "maskable"
+      },
+      {
+        "src": "/static/icons/icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/static/icons/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      },
+      {
+        "src": "/static/icons/icon-1024x1024.png",
+        "sizes": "1024x1024",
         "type": "image/png"
       },
       {
         "src": "/static/icons/icon-delete-64x64.png",
         "sizes": "64x64",
-        "type": "image/png",
-        "purpose": "maskable any"
+        "type": "image/png"
       },
       {
         "src": "/static/icons/icon-edit-64x64.png",
         "sizes": "64x64",
-        "type": "image/png",
-        "purpose": "maskable any"
+        "type": "image/png"
       },
       {
         "src": "/static/icons/icon-search-64x64.png",
         "sizes": "64x64",
-        "type": "image/png",
-        "purpose": "maskable any"
-      },
-      {
-        "src": "/static/icons/icon-192x192.png",
-        "sizes": "192x192",
-        "type": "image/png",
-        "purpose": "maskable any"
-      },
-      {
-        "src": "/static/icons/icon-512x512.png",
-        "sizes": "512x512",
-        "type": "image/png",
-        "purpose": "maskable any"
+        "type": "image/png"
       },
       {
         "src": "/static/icons/icon-star-mute.png",
         "sizes": "512x512",
-        "type": "image/png",
-        "purpose": "maskable any"
+        "type": "image/png"
       },
       {
         "src": "/static/icons/icon-star-unmute.png",
         "sizes": "512x512",
-        "type": "image/png",
-        "purpose": "maskable any"
+        "type": "image/png"
       }
    ]
 }
