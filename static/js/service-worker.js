@@ -1,19 +1,20 @@
 const CACHE_NAME = 'ICOG-cache-v2';
 const urlsToCache = [
     '/',
-    '/static/style.css',
-    '/static/uploads/',
-    '/register',
-    '/login',
-    '/offline',
-    '/static/icons/icon-star-mute.png',
-    '/static/icons/icon-star-unmute.png',
-    '/static/icons/icon-delete-64x64.png',
-    '/static/icons/icon-edit-64x64.png',
+    '/static/css/style.css',
+    '/static/icons/favicon.png',
     '/static/icons/icon-192x192.png',
     '/static/icons/icon-512x512.png',
-    '/static/icons/favicon.png',
-    '/manifest.json'
+    '/static/icons/icon-1024x1024.png',
+    '/static/icons/icon-delete-64x64.png',
+    '/static/icons/icon-edit-64x64.png',
+    '/static/icons/icon-search-64x64.png',
+    '/static/icons/icon-star-mute.png',
+    '/static/icons/icon-star-unmute.png',
+    '/manifest.json',
+    '/login',
+    '/offline',
+    '/register',
 ];
 
 // Helper function for debugging
@@ -29,7 +30,6 @@ self.addEventListener('install', event => {
             .then(cache => {
                 debug('Caching offline page and other resources');
                 
-                // First cache the offline page
                 return cache.add('/offline')
                     .then(() => {
                         debug('Offline page cached successfully');
@@ -76,7 +76,6 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
     debug(`Fetch request for: ${event.request.url}`);
 
-    // Special handling for navigation requests
     if (event.request.mode === 'navigate') {
         debug('Handling navigation request');
         event.respondWith(
@@ -106,15 +105,12 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // For non-navigation requests, use network-first strategy
     event.respondWith(
         fetch(event.request)
             .then(response => {
                 debug(`Network request successful for: ${event.request.url}`);
-                // Clone the response before caching
                 const responseToCache = response.clone();
                 
-                // Only cache successful responses
                 if (response.status === 200) {
                     caches.open(CACHE_NAME)
                         .then(cache => {
