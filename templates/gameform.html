@@ -1,24 +1,25 @@
 {% extends "base.html" %}
+
 {% block content %}
 <div class="game-detail">
     <div class="game-header">
-        <img src="{{ url_for('static', filename='gcovers/' + game['image_path']) }}" alt="{{ game['title'] }}">
-        <div class="game-info">
+        <img src="{{ url_for('static', filename='gcovers/' + game['image_path']) }}" alt="Game">  <!-- Uses url_for to ensure the path is securely generated - https://www.sitepoint.com/flask-url-routing/#:~:text=The%20url_for()%20function%20in,part%20of%20the%20URL%20rule. -->
+        <div class="game-info"> <!-- Displays the game cover image and the corresponding game title -->
             <h2>{{ game['title'] }}</h2>
         </div>
     </div>
-    <div class="game-meta">
+    <div class="game-meta"> <!-- Displays the corresponding game description, year and average star rating -->
         <p>{{ game['description'] }}</p>
         <span>Release Date: {{ game['year'] }}</span>
-        <span>Rating: {{ game['rating'] }}/5</span>  <!-- Display the average rating -->
+        <span>Rating: {{ game['rating'] }}/5</span> 
     </div>
 </div>
 
-{% if session.get('user_id') %}
+{% if session.get('user_id') %} <!-- Only displays review form if user is logged in; secure through verifing session to prevent unauthorized access --> -->
     <div class="entry-form">
         <form action="{{ url_for('add_entry') }}" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="game" value="{{ game['id'] }}">
-            <input type="hidden" name="user_id" value="{{ session.get('user_id') }}">
+            <input type="hidden" name="game" value="{{ game['id'] }}"> <!-- Finds the game id and user id -->
+            <input type="hidden" name="user_id" value="{{ session.get('user_id') }}"> <!-- Hidden fields are validated through the server -->
             <div>
                 <h2>Write A Review</h2>
                 <label for="title">Title:</label>
@@ -26,12 +27,12 @@
             </div>
             <div>
                 <label>Rating:</label>
-                <div class="stars">
-                    {% for i in range(5) %}
+                <div class="stars"> 
+                    {% for i in range(5) %} <!-- Duplicates star icon 5 times -->
                         <img src="{{ url_for('static', filename='icons/icon-star-mute.png') }}" alt="Star" class="star" data-index="{{ i }}">
                     {% endfor %}
                 </div>
-                <input type="hidden" id="rating_content" name="rating" value="0">
+                <input type="hidden" id="rating_content" name="rating" value="0"> <!-- Gets the value of the user star rating as an input -->
             </div>
             <div>
                 <label for="description">Description:</label>
@@ -45,30 +46,29 @@
         </form>
     </div>
 {% else %}
-    <p class="error">
+    <p class="error"> <!-- Displays a login message if user is not logged in + Provides a link to login page -->
       Reviews can only be made with an account. <a href="{{ url_for('login') }}">Log in now</a>.
     </p>
 {% endif %}
 
 <div class="entry-list">
     <h2>Community Reviews</h2>
-    {% if entries %}
-        <!-- Review Entries -->
-        {% for entry in entries %}
+    {% if entries %} <!-- Finds and displays all pre-existing entries for the game selected -->
+        {% for entry in entries %} 
         <div class="entry">
-            <img src="{{ url_for('static', filename=entry.image_path) }}" alt="{{entry.title}}">
-            <div id="display-{{entry.id}}">
+            <img src="{{ url_for('static', filename=entry.image_path) }}" alt="Entry">
+            <div id="display-{{entry.id}}"> <!-- Displays entry title, name of user that created the review, star rating, description, time created and image -->
                 <h3>{{ entry.title }}</h3> 
-                <p class="date">Reviewed by: {{ entry.username }}</p>
+                <p class="date">Reviewed by: {{ entry.username }}</p> 
                 <p>{{ entry.description }}</p>
                 <div class="starsdisplay">
-                    {% for i in range(5) %}
-                        <img src="{{ url_for('static', filename='icons/icon-star-' ~ ('unmute.png' if i < entry.rating else 'mute.png')) }}" alt="Star">
+                    {% for i in range(5) %} <!-- Displays 5 stars; finds the value of the star rating and fills out the stars until star value matches the filled in stars -->
+                        <img src="{{ url_for('static', filename='icons/icon-star-' ~ ('unmute.png' if i < entry.rating else 'mute.png')) }}" alt="Star"> <!-- Used chatgpt for the url filename conditions -->
                     {% endfor %}
                 </div>
                 <div class="entry-footer">
                     <span class="date">{{ entry.created_at }}</span>
-                    {% if session.get('user_id') == entry.user_id %} <!-- Ensure only the creator can edit/delete -->
+                    {% if session.get('user_id') == entry.user_id %} <!-- Ensures only the creator can edit/delete -->
                      <div class="entry-actions"> 
                         <form action="{{ url_for('delete_entry', entry_id=entry.id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this entry?');">
                             <button class="icon-button" title="Delete">
@@ -76,34 +76,24 @@
                             </button>
                         </form>
 
-                        <button class="icon-button" onclick="showEditForm('{{ entry.id }}')" title="Edit">
+                        <button class="icon-button" onclick="showEditForm('{{ entry.id }}')" title="Edit"> <!-- Shows edit form to the creator if edit icon is clicked -->
                             <img src="{{ url_for('static', filename='icons/icon-edit-64x64.png')}}" alt="Edit" class="icon">
                         </button>
                     </div>
                     {% endif %}
                 </div>
             </div>
-            <div id="edit-{{ entry.id }}" style="display: none;">
-            <!-- Edit Entries -->
-                <form action="{{ url_for('edit_entry', entry_id=entry.id) }}" method="post" enctype="multipart/form-data">
-                    <div>
-                        <label for="edit-game-{{ entry.id }}"></label>
-                        {% for game in games %}
-                            {% if game.id == entry.game_id %}
-                                <span id="edit-game-{{ entry.id }}">Game: {{ game.title }}</span>
-                            {% endif %}
-                        {% endfor %}
-                    </div>                    
-                    <div>
-                        <label for="edit-title-{{ entry.id }}">Title:</label>
+            <div id="edit-{{ entry.id }}" style="display: none;"> <!-- Used chatgpt for the this div line -->
+                <form action="{{ url_for('edit_entry', entry_id=entry.id) }}" method="post" enctype="multipart/form-data">               
+                    <div> <!-- Allows creator to edit title, star rating, description and photo (optional) -->
+                        <label for="edit-title-{{ entry.id }}">Title:</label> 
                         <input type="text" id="edit-title-{{ entry.id }}" name="title" value="{{ entry.title }}" required>
                     </div>
                     <div>
                         <label>Rating:</label>
                         <div class="stars">
                             {% for i in range(5) %}
-                                <img src="{{ url_for('static', filename='icons/icon-star-' ~ ('unmute.png' if i < entry.rating else 'mute.png')) }}" 
-                                    alt="Star" id="edit-star-{{entry.id}}-{{i}}">
+                                <img src="{{ url_for('static', filename='icons/icon-star-' ~ ('unmute.png' if i < entry.rating else 'mute.png')) }}" alt="Star" id="edit-star-{{entry.id}}-{{i}}">
                             {% endfor %}
                         </div>
                         <input type="hidden" id="edit-rating-{{ entry.id }}" name="rating" value="{{ entry.rating }}">
@@ -117,12 +107,12 @@
                         <input type="file" id="edit-image-{{ entry.id }}" name="image" accept="image/*">
                     </div>
                     <button type="submit">Save Changes</button>
-                    <button type="button" onclick="hideEditForm('{{ entry.id }}')">Cancel</button>
+                    <button type="button" onclick="hideEditForm('{{ entry.id }}')">Cancel</button> <!-- Hides/closes the form -->
                 </form>
             </div>
         </div>
         {% endfor %}
-    {% else %}
+    {% else %} <!-- If there are no entries in the database -->
         <p>No reviews yet. Be the first to review this game!</p>
     {% endif %}
 </div>
@@ -135,7 +125,7 @@ const updateStars = (stars, ratingInput, index) => {
             ? "{{ url_for('static', filename='icons/icon-star-unmute.png') }}"
             : "{{ url_for('static', filename='icons/icon-star-mute.png') }}";
     });
-    ratingInput.value = index + 1;
+    ratingInput.value = index + 1; /* Adds a value of 1 onto the previous value of the star for each star generated (in this context, 5 stars have been generated) */
 };
 
 document.querySelectorAll(".stars").forEach((container) => {
@@ -150,12 +140,12 @@ document.querySelectorAll(".stars").forEach((container) => {
 function showEditForm(entryId) {
 document.getElementById(`display-${entryId}`).style.display = 'none';
 document.getElementById(`edit-${entryId}`).style.display = 'block';
-}
+} /* Shows the edit form */
 
 function hideEditForm(entryId) {
 document.getElementById(`display-${entryId}`).style.display = 'block';
 document.getElementById(`edit-${entryId}`).style.display = 'none';
-}
+} /* Hides the edit form */
 </script>
 
 {% endblock %}
