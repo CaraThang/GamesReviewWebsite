@@ -10,6 +10,10 @@ body {
     margin: auto;
 }
 
+.offline {
+    text-align: center;
+}
+
 /* Header Styling */
 .header {
     display: flex; /* Lays out content in a row, side by side - https://developer.mozilla.org/en-US/docs/Web/CSS/display */

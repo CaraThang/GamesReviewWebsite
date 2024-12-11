@@ -9,7 +9,8 @@
       {
         "src": "/static/icons/favicon.png",
         "sizes": "64x64",
-        "type": "image/png"
+        "type": "image/png",
+        "purpose" : "maskable"
       },
       {
         "src": "/static/icons/icon-192x192.png",
