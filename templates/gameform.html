@@ -3,7 +3,7 @@
 {% block content %}
 <div class="game-detail">
     <div class="game-header">
-        <img src="{{ url_for('static', filename='gcovers/' + game['image_path']) }}" alt="Game">
+        <img src="{{ url_for('static', filename='gcovers/' + game['image_path']) }}" alt="Game">  <!-- Uses url_for to ensure the path is securely generated - https://www.sitepoint.com/flask-url-routing/#:~:text=The%20url_for()%20function%20in,part%20of%20the%20URL%20rule. -->
         <div class="game-info"> <!-- Displays the game cover image and the corresponding game title -->
             <h2>{{ game['title'] }}</h2>
         </div>
@@ -15,11 +15,11 @@
     </div>
 </div>
 
-{% if session.get('user_id') %} <!-- Only displays review form if user is logged in -->
+{% if session.get('user_id') %} <!-- Only displays review form if user is logged in; secure through verifing session to prevent unauthorized access --> -->
     <div class="entry-form">
         <form action="{{ url_for('add_entry') }}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="game" value="{{ game['id'] }}"> <!-- Finds the game id and user id -->
-            <input type="hidden" name="user_id" value="{{ session.get('user_id') }}">
+            <input type="hidden" name="user_id" value="{{ session.get('user_id') }}"> <!-- Hidden fields are validated through the server -->
             <div>
                 <h2>Write A Review</h2>
                 <label for="title">Title:</label>

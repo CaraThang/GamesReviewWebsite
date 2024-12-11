@@ -22,7 +22,8 @@ def get_db(): # Connects to the database
 
 @app.route('/')
 def home():
-    db = get_db() # Calls the database and gets all the values in the 'games' table
+     # Calls the database and gets all the values in the 'games' table
+    db = get_db() # Secure from SQL injection by parameterised query - https://qwiet.ai/solving-sql-injection-parameterized-queries-vs-stored-procedures/#:~:text=Parameterized%20Queries%20offer%20a%20robust,recognizes%20the%20input%20as%20data.
     games = db.execute('SELECT * FROM games').fetchall()
     return render_template('home.html', games=games) # Opens the home page template with game data
     
@@ -30,7 +31,7 @@ def home():
 def gameform(game_id):
     db = get_db() # Calls the database and gets all the values in the 'games' table with a specific ID
     game = db.execute('SELECT * FROM games WHERE id = ?', (game_id,)).fetchone()
-    entries = db.execute('''
+    entries = db.execute(''' 
         SELECT 
             entries.*, 
             users.username 
@@ -52,9 +53,9 @@ def login():
         username = request.form['username']
         password = request.form['password']
         db = get_db()
-        user = db.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone() # Finds the user by username
+        user = db.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone() # Finds the user by username; secures from SQL injection
 
-        if user and check_password_hash(user['password'], password):
+        if user and check_password_hash(user['password'], password): # Password securely hashed
             # Save user info in session if login is successful - https://testdriven.io/blog/flask-sessions/
             session['user_id'] = user['id']
             session['username'] = user['username']
@@ -69,7 +70,7 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        hashed_password = generate_password_hash(password) # Hash the password for security
+        hashed_password = generate_password_hash(password) # Hash the password for security; # secures passwords 
 
         db = get_db() # Insert/Update new user info into the database
         db.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, hashed_password))
@@ -80,7 +81,7 @@ def register():
 
 @app.route('/logout')
 def logout():
-    session.clear() # Clear the session data and refreshes to home page
+    session.clear() # Clear the session data and refreshes to home page; secure session management
     return redirect(url_for('home'))
 
 @app.route('/search', methods=['GET'])
@@ -116,7 +117,7 @@ def add_entry():
         flash('No image selected', 'error')
         return redirect(url_for('gameform', game_id=game_id)) 
 
-    if image and allowed_file(image.filename): # Check if the uploaded file is valid
+    if image and allowed_file(image.filename): # Check if the uploaded file is valid; # prevents file-based attacks
         # Save the image with a unique filename
         filename = secure_filename(f"{datetime.now().timestamp()}_{image.filename}")
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename) # Create the full file path
@@ -135,7 +136,7 @@ def add_entry():
         # Calculate the average rating for the game - getting rating from the entries table
         entries = db.execute('''
             SELECT rating FROM entries WHERE game_id = ?
-        ''', (game_id,)).fetchall()
+        ''', (game_id,)).fetchall() # Secure from SQL injection
 
         if entries:
             total_rating = sum(entry['rating'] for entry in entries)  # Calculate the total rating

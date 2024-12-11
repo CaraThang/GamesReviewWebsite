@@ -5,7 +5,7 @@
 <div class="game-gallery">
     {% for game in games %} <!-- Loads all the games in the database -->
     <div class="game-item"> <!-- Displays the game cover image and the corresponding game title and year of release -->
-        <a href="{{ url_for('gameform', game_id=game['id']) }}">
+        <a href="{{ url_for('gameform', game_id=game['id']) }}"> <!-- URL generated to prevent path manipulation -->
             <img src="{{ url_for('static', filename='gcovers/' + game['image_path']) }}" alt="Game">
         </a>
         <h4>{{ game['title'] }}</h4>

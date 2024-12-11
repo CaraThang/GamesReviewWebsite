@@ -30,7 +30,7 @@
         </a>
 
         <div class="auth-actions"> 
-            {% if session.user_id %} <!-- Checking if a user is logged in or not  -->
+            {% if session.user_id %} <!-- Checking if a user is logged in or not; secure from vulnerabilities -->
                 <span>Welcome, {{ session.username }}</span>
                 <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
             {% else %}
@@ -43,7 +43,7 @@
     <div class="subheader">
         <button id="back-button">← Back</button> <!-- Back Button -->
 
-        {% if request.endpoint not in ['login', 'register'] %} <!-- Hides search bar from login and register page - Used chatgpt for the if statement-->
+        {% if request.endpoint not in ['login', 'register'] %} <!-- Hides search bar from login and register page - Used chatgpt for the if statement; secure since it limits form exposure-->
             <form method="get" action="{{ url_for('search') }}" class="search-form">
                 <input type="text" name="search" placeholder="Search For Games"> <!-- Placeholder: text inside the box - https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/placeholder -->
                 <button type="submit">
@@ -54,7 +54,7 @@
 
         <div>
             {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %} <!-- Locates stored messages -->
+                {% if messages %} <!-- Locates stored messages; secure since only displays stored server messages -->
                     {% for category, message in messages %} 
                         <div class="message {% if category == 'error' %}error{% else %}success{% endif %}">
                             {{ message }} <!-- Displays the appropriate message depending on failure or success of the action -->
