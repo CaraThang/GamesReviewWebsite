@@ -26,7 +26,7 @@
 <body>
     <div class="header">
         <a href="{{ url_for('home') }}">
-            <img src="/static/icons/favicon.png" alt="Logo"> <!-- Displays ICOG logo in the header -->
+            <img src="/static/icons/favicon.png" alt="ICOG Logo"> <!-- Displays ICOG logo in the header -->
         </a>
 
         <div class="auth-actions"> 
@@ -47,7 +47,7 @@
             <form method="get" action="{{ url_for('search') }}" class="search-form">
                 <input type="text" name="search" placeholder="Search For Games"> <!-- Placeholder: text inside the box - https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/placeholder -->
                 <button type="submit">
-                    <img src="/static/icons/icon-search-64x64.png" alt="Search"> <!-- Search Button -->
+                    <img src="/static/icons/icon-search-64x64.png" alt="Search Icon"> <!-- Search Button -->
                 </button>
             </form>
         {% endif %}

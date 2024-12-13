@@ -3,7 +3,7 @@
 {% block content %}
 <div class="game-detail">
     <div class="game-header">
-        <img src="{{ url_for('static', filename='gcovers/' + game['image_path']) }}" alt="Game">  <!-- Uses url_for to ensure the path is securely generated - https://www.sitepoint.com/flask-url-routing/#:~:text=The%20url_for()%20function%20in,part%20of%20the%20URL%20rule. -->
+        <img src="{{ url_for('static', filename='gcovers/' + game['image_path']) }}" alt="Game Cover Image">  <!-- Uses url_for to ensure the path is securely generated - https://www.sitepoint.com/flask-url-routing/#:~:text=The%20url_for()%20function%20in,part%20of%20the%20URL%20rule. -->
         <div class="game-info"> <!-- Displays the game cover image and the corresponding game title -->
             <h2>{{ game['title'] }}</h2>
         </div>
@@ -29,7 +29,7 @@
                 <label>Rating:</label>
                 <div class="stars"> 
                     {% for i in range(5) %} <!-- Duplicates star icon 5 times -->
-                        <img src="{{ url_for('static', filename='icons/icon-star-mute.png') }}" alt="Star" class="star" data-index="{{ i }}">
+                        <img src="{{ url_for('static', filename='icons/icon-star-mute.png') }}" alt="Star Icon" class="star" data-index="{{ i }}">
                     {% endfor %}
                 </div>
                 <input type="hidden" id="rating_content" name="rating" value="0"> <!-- Gets the value of the user star rating as an input -->
@@ -56,14 +56,14 @@
     {% if entries %} <!-- Finds and displays all pre-existing entries for the game selected -->
         {% for entry in entries %} 
         <div class="entry">
-            <img src="{{ url_for('static', filename=entry.image_path) }}" alt="Entry">
+            <img src="{{ url_for('static', filename=entry.image_path) }}" alt="Entry Game Image">
             <div id="display-{{entry.id}}"> <!-- Displays entry title, name of user that created the review, star rating, description, time created and image -->
                 <h3>{{ entry.title }}</h3> 
                 <p class="date">Reviewed by: {{ entry.username }}</p> 
                 <p>{{ entry.description }}</p>
                 <div class="starsdisplay">
                     {% for i in range(5) %} <!-- Displays 5 stars; finds the value of the star rating and fills out the stars until star value matches the filled in stars -->
-                        <img src="{{ url_for('static', filename='icons/icon-star-' ~ ('unmute.png' if i < entry.rating else 'mute.png')) }}" alt="Star"> <!-- Used chatgpt for the url filename conditions -->
+                        <img src="{{ url_for('static', filename='icons/icon-star-' ~ ('unmute.png' if i < entry.rating else 'mute.png')) }}" alt="Star Icon"> <!-- Used chatgpt for the url filename conditions -->
                     {% endfor %}
                 </div>
                 <div class="entry-footer">
@@ -93,7 +93,7 @@
                         <label>Rating:</label>
                         <div class="stars">
                             {% for i in range(5) %}
-                                <img src="{{ url_for('static', filename='icons/icon-star-' ~ ('unmute.png' if i < entry.rating else 'mute.png')) }}" alt="Star" id="edit-star-{{entry.id}}-{{i}}">
+                                <img src="{{ url_for('static', filename='icons/icon-star-' ~ ('unmute.png' if i < entry.rating else 'mute.png')) }}" alt="Star Icon" id="edit-star-{{entry.id}}-{{i}}">
                             {% endfor %}
                         </div>
                         <input type="hidden" id="edit-rating-{{ entry.id }}" name="rating" value="{{ entry.rating }}">
